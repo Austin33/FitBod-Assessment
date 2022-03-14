@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myworkout
+  labels:
+    app: myworkout
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myworkout
+  template:
+    metadata:
+      labels:
+        app: myworkout
+    spec:
+      containers:
+      - name: myworkout
+        image: fitbodinc/my_workout:0.1.0
+        imagePullPolicy: Always
+
+        env:
+          name1: "POSTGRES_USER"
+          valueFrom1:
+            secretKeyRef:
+              key: POSTGRES_USER
+              name: {{ .Release.Name }}-auth
+          name2: "POSTGRES_PW"
+          valueFrom2:
+            secretKeyRef:
+              key: POSTGRESS_PW
+              name: {{ .Release.Name }}-auth
+          name3: "POSTGRES_HOST"
+          valueFrom3:
+            secretKeyRef:
+              key: POSTGRES_HOST
+              name: {{ .Release.Name }}-auth
+          name4: "RAILS_MASTER_KEY"
+          valueFrom4:
+            secretKeyRef:
+              key: RAILS_MASTER_KEY
+              name: {{ .Release.Name }}-auth
+
